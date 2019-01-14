@@ -9,10 +9,10 @@ namespace cie
 	namespace pipenetwork 
 	{
 		PipeNetwork::PipeNetwork(const std::string& filename)
-			//filename_(filename)
+
 		{
 			std::ifstream filename1(filename);
-			//std::ifstream filename1(filename);
+
 			if (filename1.is_open())
 			{
 				filename1 >> numberofNodes_;
@@ -44,7 +44,7 @@ namespace cie
 			}
 			else
 			{
-				std::cout << "could not open file" << std::endl;
+				std::cout << "error: could not open file" << std::endl;
 			}
 		}
 		PipeNetwork::~PipeNetwork()
