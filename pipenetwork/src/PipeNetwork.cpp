@@ -22,6 +22,10 @@ namespace cie
 				double y;
 				double flux;
 
+				nodeData_.reserve(numberofNodes_);
+				tubeData_.reserve(numberofTubes_);
+
+				//read in node data
 				for (int i = 0; i < numberofNodes_; ++i)
 				{
 					filename1 >> x;
