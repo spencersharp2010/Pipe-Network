@@ -5,7 +5,7 @@ namespace cie
 {
 	namespace pipenetwork
 	{
-
+		//node class
 		class Node
 		{
 		public:
