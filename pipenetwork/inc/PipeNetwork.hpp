@@ -19,6 +19,7 @@ namespace cie
 			void print_input_data();
 			//void print_solution();
 			int numberofTubes();
+			//std::vector<double> return_flux();
 			//double diameter() const;
 		private:
 			//const std::string& filename_;
@@ -26,6 +27,7 @@ namespace cie
 			int numberofTubes_;
 			std::vector<Node*> nodeData_;
 			std::vector<Tube*> tubeData_;
+			std::vector<double> q_;
 		};
 	}
  }

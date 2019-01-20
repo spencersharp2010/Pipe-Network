@@ -10,7 +10,14 @@ int main()
 
 	cie::pipenetwork::PipeNetwork provided_pipe_system("input.txt");
 	provided_pipe_system.print_input_data();
-	provided_pipe_system.computeFluxes();
+	std::vector<double> fluxes(provided_pipe_system.numberofTubes());
+	fluxes = provided_pipe_system.computeFluxes();
+	std::cout << "solution below" << std::endl;
+	for (int i = 0; i < provided_pipe_system.numberofTubes(); ++i)
+	{
+		std::cout << fluxes[i] << std::endl;
+	}
+	//provided_pipe_system.print_solution();
 	//solution = provided_pipe_system.computeFluxes();
 	//for (int i = 0; i < provided_pipe_system.numberofTubes; ++i)
 	//{

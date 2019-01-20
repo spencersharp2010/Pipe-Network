@@ -15,33 +15,47 @@ namespace cie
 
 			if (filename1.is_open())
 			{
+				//read in first and second values of .txt file. these provide
+				//# of nodes and # of tubes in pipe network
 				filename1 >> numberofNodes_;
 				filename1 >> numberofTubes_;
 
+				//declare variables to store nodal values provided in .txt file
 				double x;
 				double y;
 				double flux;
 
+				//initializes nodeData and tubeData vector to size declared in .txt file
 				nodeData_.reserve(numberofNodes_);
 				tubeData_.reserve(numberofTubes_);
 
-				//read in node data
+				//read in node data from .txt file
 				for (int i = 0; i < numberofNodes_; ++i)
 				{
-					filename1 >> x;
-					filename1 >> y;
-					filename1 >> flux;
-					nodeData_.push_back(new Node(x, y, flux, i));
+					filename1 >> x;			//x coordinate
+					filename1 >> y;			//y coordinate
+					filename1 >> flux;		//flux through node
+
+					//declare a new instance of "node" class and provide x & y coordinate, flux, and an id for this node
+					//nodeData stores this in a vector of pointers
+					nodeData_.push_back(new Node(x, y, flux, i));	
+																
 				}
 
-				int node_1;
-				int node_2;
-				double diameter;
+				//declare variables to store tube values provided in .txt file
+				int node_1;					//which node defines one end of the tube
+				int node_2;					//which node defines other end of the tube
+				double diameter;			//diameter of tube
+
+				//read in tube data from .txt file
 				for (int i = 0; i < numberofTubes_; ++i)
 				{
-					filename1 >> node_1;
-					filename1 >> node_2;
-					filename1 >> diameter;
+					filename1 >> node_1;	//read in first node associated with current tube
+					filename1 >> node_2;	//read in second node associated with current tube
+					filename1 >> diameter;	//read in diameter of tube
+
+					//declare a new pointer to "tube" class and provide first node, second node, and diameter
+					//tubeData stores this in a vector of pointers
 					tubeData_.push_back(new Tube(nodeData_[node_1], nodeData_[node_2], diameter));
 				}
 				filename1.close();
@@ -51,6 +65,8 @@ namespace cie
 				std::cout << "error: could not open file" << std::endl;
 			}
 		}
+
+		//destructor for PipeNetwork. Deletes instances of nodeData and tubeData by iterating across the vectors
 		PipeNetwork::~PipeNetwork()
 		{
 			for (int i = 0; i < numberofNodes_; ++i)
@@ -98,13 +114,14 @@ namespace cie
 			std::vector<double> head(numberofNodes_);
 			head = cie::linalg::solve(B, Q);
 			std::vector<double> q(numberofTubes_);
+
 			for (int i = 0; i < numberofTubes_; ++i)
 			{
 				int nodeID1 = tubeData_[i]->node1()->id();
 				int nodeID2 = tubeData_[i]->node2()->id();
 				double B_i = tubeData_[i]->permeability();
 				q[i] = B_i * (head[nodeID1] - head[nodeID2]);
-				std::cout << q[i] << std::endl;
+				//std::cout << q[i] << std::endl;
 			}
 
 			return q;
@@ -122,7 +139,7 @@ namespace cie
 			
 			for (int i = 0; i < numberofTubes_; ++i)
 			{
-				std::cout << "node1: " << tubeData_[i]->node1()->id() << ";  node 2: " << tubeData_[i]->node1()->id() << ";  diameter: " << tubeData_[i]->diameter() << std::endl;
+				std::cout << "node1: " << tubeData_[i]->node1()->id() << ";  node 2: " << tubeData_[i]->node2()->id() << ";  diameter: " << tubeData_[i]->diameter() << std::endl;
 			}
 		}
 
