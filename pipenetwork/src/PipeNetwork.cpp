@@ -70,88 +70,95 @@ namespace cie
 		{
 			for (int i = 0; i < numberofNodes_; ++i)
 			{
-				delete nodeData_[i];
+				delete nodeData_[i];					//delete all pointers in nodeData vector
 			}
 			for (int i = 0; i < numberofTubes_; ++i)
 			{
-				delete tubeData_[i];
+				delete tubeData_[i];					//delete all pointers in tubeData vector
 			}
 		}
 
+		//function to compute fluxes through each pipe, based on node and tube data
 		std::vector<double> PipeNetwork::computeFluxes() const
 		{
-			cie::linalg::Matrix B(numberofNodes_, 0);
+			cie::linalg::Matrix B(numberofNodes_, 0);			//initialize square (#nodes x #nodes) matrix using linear algebra library function
+																//all values initialized to 0
 
-			for (int i = 0; i < numberofTubes_; ++i) 
+			for (int i = 0; i < numberofTubes_; ++i)			//loop over all tubes
 			{
-				double B_i = tubeData_[i]->permeability();
-				int nodeID1 = tubeData_[i]->node1()->id();
-				int nodeID2 = tubeData_[i]->node2()->id();
-				B(nodeID1, nodeID1) += B_i;
-				B(nodeID2, nodeID2) += B_i;
-				B(nodeID1, nodeID2) -= B_i;
-				B(nodeID2, nodeID1) -= B_i;
+				double B_i = tubeData_[i]->permeability();		//store permeability from tubeData vector
+				int nodeID1 = tubeData_[i]->node1()->id();		//retrieve id of node1
+				int nodeID2 = tubeData_[i]->node2()->id();		//retrieve id of node2
+				B(nodeID1, nodeID1) += B_i;						//add permeability to B matrix in position node1, node1
+				B(nodeID2, nodeID2) += B_i;						//add permeability to B matrix in position node2, node2
+				B(nodeID1, nodeID2) -= B_i;						//subtract permeability from B matrix in position node1, node2
+				B(nodeID2, nodeID1) -= B_i;						//subtract permeability from B matrix in position node2, node1
 			}
 
-			std::vector<double> Q(numberofNodes_);
+			std::vector<double> Q(numberofNodes_);				//initialize vector Q of size based on # of nodes
+																//Q represents volumetric flow rate
 
-			for (int i = 0; i < numberofNodes_; ++i)
+			for (int i = 0; i < numberofNodes_; ++i)			//populate Q vector with flow stored in node data vector
 			{
 				Q[i] = -1 * nodeData_[i]->flow();
 			}
 
-			for (int i = 0; i < numberofNodes_; ++i)
+			for (int i = 0; i < numberofNodes_; ++i)			//set boundary conditions
 			{
 				B(i, 0) = 0;
 				B(0, i) = 0;
 			}
 
-			B(0, 0) = 1;
-			Q[0] = 0;
+			B(0, 0) = 1;										//more boundary conditions
+			Q[0] = 0;											//more boundary conditions
 
-			std::vector<double> head(numberofNodes_);
-			head = cie::linalg::solve(B, Q);
-			std::vector<double> q(numberofTubes_);
+			std::vector<double> head(numberofNodes_);			//initialize vector head (hydraulic head) of size based on # of nodes
+			head = cie::linalg::solve(B, Q);					//use linalg function to perform linalg operate to compute head
+			std::vector<double> q(numberofTubes_);				//initialize vector q. this is what we are wanting to compute			
 
-			for (int i = 0; i < numberofTubes_; ++i)
+			for (int i = 0; i < numberofTubes_; ++i)			//loop over number of tubes
 			{
-				int nodeID1 = tubeData_[i]->node1()->id();
-				int nodeID2 = tubeData_[i]->node2()->id();
-				double B_i = tubeData_[i]->permeability();
-				q[i] = B_i * (head[nodeID1] - head[nodeID2]);
-				//std::cout << q[i] << std::endl;
+				int nodeID1 = tubeData_[i]->node1()->id();		//retrieve ID of node1 associated with current tube
+				int nodeID2 = tubeData_[i]->node2()->id();		//retrieve ID of node2 associated with current tube
+				double B_i = tubeData_[i]->permeability();		//retrieve permeability of current tube
+				q[i] = B_i * (head[nodeID1] - head[nodeID2]);	//perform calculation to determine flux of current tube and store in vector
 			}
 
 			return q;
 		}
 
+		//program to output input data read from txt file
 		void PipeNetwork::print_input_data()
 		{
 			std::cout << "number of nodes: " << numberofNodes_ << std::endl;
 			std::cout << "number of tubes: " << numberofTubes_ << std::endl;
 
+			//loop across all nodes and output data stored in nodeData vector
 			for (int i = 0; i < numberofNodes_; ++i)
 			{
 				std::cout << "x: " << nodeData_[i]->x() << ";  y: " << nodeData_[i]->y() << ";  flux: " << nodeData_[i]->flow() << std::endl;
 			}
-			
+
+			//loop across all tubes and output data stored in tubeData vector
 			for (int i = 0; i < numberofTubes_; ++i)
 			{
 				std::cout << "node1: " << tubeData_[i]->node1()->id() << ";  node 2: " << tubeData_[i]->node2()->id() << ";  diameter: " << tubeData_[i]->diameter() << std::endl;
 			}
 		}
 
-		//void PipeNetwork::print_solution()
-		//{
-		//	std::cout << " " << std::endl;
-		//	std::cout << "----------------SOLUTION BELOW--------------------" << std::endl;
+		void PipeNetwork::print_solution()
+		{
+			std::cout << " " << std::endl;
+			std::cout << "----------------SOLUTION BELOW--------------------" << std::endl;
 
-		//	for (int i = 0; i < numberofTubes_; ++i)
-		//	{
-		//		std::cout << "flux[" << i << "] = " <<  << std::endl;
-		//	}
+			std::vector<double> qprint(numberofTubes_);
+			qprint = cie::pipenetwork::PipeNetwork::computeFluxes();
+			for (int i = 0; i < numberofTubes_; ++i)
+			{
+				std::cout << "flux[" << i << "] = " << qprint[i] << std::endl;
+			}
 
-		//}
+		}
 
 		int PipeNetwork::numberofTubes()
 		{

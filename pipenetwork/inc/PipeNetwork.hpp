@@ -17,6 +17,7 @@ namespace cie
 			~PipeNetwork();									//destructor
 			std::vector<double> computeFluxes() const;		//compute fluxes through each tube (final solution)
 			void print_input_data();						//function to print out input data to console
+			void print_solution();
 			int numberofTubes();							//return number of tubes provided in input data
 		private:
 			int numberofNodes_;								//number of nodes present in system	
