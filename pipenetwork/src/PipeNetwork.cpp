@@ -38,8 +38,7 @@ namespace cie
 
 					//declare a new instance of "node" class and provide x & y coordinate, flux, and an id for this node
 					//nodeData stores this in a vector of pointers
-					nodeData_.push_back(new Node(x, y, flux, i));	
-																
+					nodeData_.push_back(new Node(x, y, flux, i));																	
 				}
 
 				//declare variables to store tube values provided in .txt file
@@ -81,7 +80,6 @@ namespace cie
 
 		std::vector<double> PipeNetwork::computeFluxes() const
 		{
-
 			cie::linalg::Matrix B(numberofNodes_, 0);
 
 			for (int i = 0; i < numberofTubes_; ++i) 

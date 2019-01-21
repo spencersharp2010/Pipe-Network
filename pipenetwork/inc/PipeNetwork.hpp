@@ -13,21 +13,17 @@ namespace cie
 		class PipeNetwork
 		{
 		public:
-			PipeNetwork(const std::string& filename);
-			~PipeNetwork();
-			std::vector<double> computeFluxes() const;
-			void print_input_data();
-			//void print_solution();
-			int numberofTubes();
-			//std::vector<double> return_flux();
-			//double diameter() const;
+			PipeNetwork(const std::string& filename);		//constructor
+			~PipeNetwork();									//destructor
+			std::vector<double> computeFluxes() const;		//compute fluxes through each tube (final solution)
+			void print_input_data();						//function to print out input data to console
+			int numberofTubes();							//return number of tubes provided in input data
 		private:
-			//const std::string& filename_;
-			int numberofNodes_;
-			int numberofTubes_;
-			std::vector<Node*> nodeData_;
-			std::vector<Tube*> tubeData_;
-			std::vector<double> q_;
+			int numberofNodes_;								//number of nodes present in system	
+			int numberofTubes_;								//number of tubes present in system
+			std::vector<Node*> nodeData_;					//vector storing pointers to all instances of nodes in system
+			std::vector<Tube*> tubeData_;					//vector storing pointers to all instances of tubes in system
+			std::vector<double> q_;							//vector storing fluxes of all tubes
 		};
 	}
  }

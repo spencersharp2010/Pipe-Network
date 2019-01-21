@@ -10,18 +10,18 @@ namespace cie
 		class Tube
 		{
 		public:
-			Tube(Node* node1, Node* node2, double diameter);
-			double length() const;
-			double permeability() const;
-			double diameter() const;
-			const Node* node1() const;
-			const Node* node2() const;
+			Tube(Node* node1, Node* node2, double diameter);	//constructor
+			double length() const;					//returns length of tube
+			double permeability() const;			//returns permeability of tube
+			double diameter() const;				//returns diameter of tube
+			const Node* node1() const;				//returns pointer to instance of node1 associated with tube
+			const Node* node2() const;				//returns pointer to instance of node2 associated with tube
 		private:
-			Node* node1_;
-			Node* node2_;
-			double permeability_;
-			double length_;
-			double diameter_;
+			Node* node1_;							//pointer to node1 associated with tube (aggregation of node1)
+			Node* node2_;							//pointer to node1 associated with tube (aggregation of node2)
+			double permeability_;					//permeability of tube
+			double length_;							//length of tube
+			double diameter_;						//diameter of tube
 
 		};
 	}
