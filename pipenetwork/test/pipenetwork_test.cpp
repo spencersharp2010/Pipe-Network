@@ -1,9 +1,9 @@
+#define CATCH_CONFIG_MAIN
+
 #include "PipeNetwork.hpp"
 #include "Node.hpp"
 #include "Tube.hpp"
-
 #include "catch.hpp"
-
 #include <fstream>
 #include <cmath>
 #include <type_traits>

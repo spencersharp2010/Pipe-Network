@@ -25,7 +25,7 @@ namespace cie
 				double y;
 				double flux;
 
-				//initializes nodeData and tubeData vector to size declared in .txt file
+				//initializes nodeData and tubeData vectors to size declared in .txt file
 				nodeData_.reserve(numberofNodes_);
 				tubeData_.reserve(numberofTubes_);
 
@@ -103,9 +103,9 @@ namespace cie
 				Q[i] = -1 * nodeData_[i]->flow();
 			}
 
-			for (int i = 0; i < numberofNodes_; ++i)			//set boundary conditions
-			{
-				B(i, 0) = 0;
+			for (int i = 0; i < numberofNodes_; ++i)			//set boundary conditions. this is needed because all formulas are based
+			{													//on the difference in hydraulic head. Absolute value is not specified.
+				B(i, 0) = 0;									//we are essentially setting the height of node 1 to 0
 				B(0, i) = 0;
 			}
 
@@ -113,8 +113,10 @@ namespace cie
 			Q[0] = 0;											//more boundary conditions
 
 			std::vector<double> head(numberofNodes_);			//initialize vector head (hydraulic head) of size based on # of nodes
-			head = cie::linalg::solve(B, Q);					//use linalg function to perform linalg operate to compute head
-			std::vector<double> q(numberofTubes_);				//initialize vector q. this is what we are wanting to compute			
+
+			head = cie::linalg::solve(B, Q);					//use linalg function to compute head. Bh=Q
+
+			std::vector<double> q(numberofTubes_);				//initialize vector q. this is what we are wanting to compute and output
 
 			for (int i = 0; i < numberofTubes_; ++i)			//loop over number of tubes
 			{
@@ -130,6 +132,7 @@ namespace cie
 		//function to output input data read from txt file
 		void PipeNetwork::print_input_data()
 		{
+			std::cout << "----------------INPUTS BELOW--------------------" << std::endl;
 			std::cout << "number of nodes: " << numberofNodes_ << std::endl;
 			std::cout << "number of tubes: " << numberofTubes_ << std::endl;
 
@@ -160,13 +163,5 @@ namespace cie
 			}
 
 		}
-
-		//function to print number of tubes in provided .txt file
-		int PipeNetwork::numberofTubes()
-		{
-			return numberofTubes_;
-		}
-
 	}
-
 }
