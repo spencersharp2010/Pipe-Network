@@ -127,7 +127,7 @@ namespace cie
 			return q;
 		}
 
-		//program to output input data read from txt file
+		//function to output input data read from txt file
 		void PipeNetwork::print_input_data()
 		{
 			std::cout << "number of nodes: " << numberofNodes_ << std::endl;
@@ -136,7 +136,7 @@ namespace cie
 			//loop across all nodes and output data stored in nodeData vector
 			for (int i = 0; i < numberofNodes_; ++i)
 			{
-				std::cout << "x: " << nodeData_[i]->x() << ";  y: " << nodeData_[i]->y() << ";  flux: " << nodeData_[i]->flow() << std::endl;
+				std::cout << "x: " << nodeData_[i]->x() << "; y: " << nodeData_[i]->y() << "; flux: " << nodeData_[i]->flow() << std::endl;
 			}
 
 			//loop across all tubes and output data stored in tubeData vector
@@ -146,20 +146,22 @@ namespace cie
 			}
 		}
 
+		//function to print solution calculated in "compute fluxes" function
 		void PipeNetwork::print_solution()
 		{
 			std::cout << " " << std::endl;
 			std::cout << "----------------SOLUTION BELOW--------------------" << std::endl;
 
-			std::vector<double> qprint(numberofTubes_);
-			qprint = cie::pipenetwork::PipeNetwork::computeFluxes();
-			for (int i = 0; i < numberofTubes_; ++i)
+			std::vector<double> qprint(numberofTubes_);					//initialize vector with size of number of tubes
+			qprint = cie::pipenetwork::PipeNetwork::computeFluxes();	//call compute fluxes function and assign result to vector qprint
+			for (int i = 0; i < numberofTubes_; ++i)					//loop over qprint and output results to console
 			{
 				std::cout << "flux[" << i << "] = " << qprint[i] << std::endl;
 			}
 
 		}
 
+		//function to print number of tubes in provided .txt file
 		int PipeNetwork::numberofTubes()
 		{
 			return numberofTubes_;
