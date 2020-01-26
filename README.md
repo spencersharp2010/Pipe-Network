@@ -1,0 +1,1 @@
+Please note that you must clone using the --recursive flag. This ensures the linear algebra libraries are properly cloned as well.
