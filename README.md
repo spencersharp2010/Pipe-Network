@@ -1,3 +1,4 @@
+# Pipe Network
 This program reads in a file called `input.txt`, which contains the following information about some hypothetical pipe network:
 * number of nodes
 * number of tubes
