@@ -1,1 +1,1 @@
-Please note that you must clone using the --recursive flag. This ensures the linear algebra libraries are properly cloned as well.
+Please note that you must clone using the --recursive flag. This ensures the linear algebra libraries are properly cloned as well. Also, note that the input.txt file should be located in the build folder.
