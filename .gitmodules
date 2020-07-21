@@ -1,3 +1,3 @@
 [submodule "linalg"]
 	path = linalg
-	url = git@gitlab.lrz.de:cie_ws1819/cie1/linalg.git
+	url = https://gitlab.lrz.de/cie_ws1819/cie1/linalg.git
