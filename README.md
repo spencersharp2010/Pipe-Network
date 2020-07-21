@@ -12,4 +12,4 @@ The program relies on the concept of aggregation to define the relationship betw
 * Tube: consists of two nodes
 * Node
 
-**Note:** you must clone using the `--recursive` flag. This ensures the linear algebra libraries are properly cloned as well. Also, note that the `input.txt` file should be located in the build folder.
+**Note:** you must clone using the `--recursive` flag. This ensures the linear algebra libraries are properly cloned as well. Also, note that the `pipedata.txt` file should be placed in the build folder.
